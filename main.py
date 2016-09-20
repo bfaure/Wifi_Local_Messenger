@@ -208,7 +208,7 @@ class main_window(QtGui.QWidget):
 	def receive(self, message):
 
 		self.received_messages.append(message)
-		self.textbox.append("[THEM - "+strftime("%H:%M:%S")"] --> "+message)
+		self.textbox.append("[THEM - "+strftime("%H:%M:%S")+"] --> "+message)
 
 	def send(self):
 
