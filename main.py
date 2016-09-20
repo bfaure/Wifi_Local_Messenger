@@ -17,6 +17,7 @@ from PyQt4.QtGui import *
 _PORT 	= 13000
 _BUFFER = 1024
 
+# This is a test comment (git)
 
 class sender_thread(QThread):
 
