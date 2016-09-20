@@ -12,4 +12,4 @@ The main UI is launched by running ```python main.py``` from the base directory.
 Python 2.7, PyQt4
 
 ## Future Improvements
-Allow for multiple users in the chat, show list of local IPs on network (ability to send chat invite to any), ability to send multimedia over network as well as text.
+Allow for multiple users in the chat, show list of local IPs on network (ability to send chat invite to any), ability to send multimedia over network as well as text. Implement the encryption algorithms in the algo folder to encrypt messages passed over network, implement transfer protocol to validate message content, add 'name' to each local IP and show that name when they send a message.
