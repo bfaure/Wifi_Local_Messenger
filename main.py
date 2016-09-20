@@ -218,7 +218,7 @@ class main_window(QtGui.QWidget):
 
 			self.send_thread.send(self.sendbox.text())
 			self.sent_messages.append(str(self.sendbox.text()))
-			self.textbox.append("[YOU  - "+strftime("%H:%M:%S")+"] --> "+self.sendbox.text())
+			self.textbox.append("[YOU   - "+strftime("%H:%M:%S")+"] --> "+self.sendbox.text())
 			self.sendbox.setText("")
 
 	def connect(self):
