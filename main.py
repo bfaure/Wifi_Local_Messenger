@@ -14,6 +14,8 @@ from PyQt4 import QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from time import strftime # For message timestamps
+
 _PORT 	= 13000
 _BUFFER = 1024
 
@@ -39,8 +41,6 @@ class sender_thread(QThread):
 	def send(self, message):
 
 		self.UDPSock.sendto(str(message), self.addr)
-		if message == "exit":
-			self.UDPSock.close()
 
 class receive_thread(QThread):
 
@@ -63,9 +63,6 @@ class receive_thread(QThread):
 			(data, addr) = UDPSock.recvfrom(buf)
 			self.emit(SIGNAL("got_message(QString)"), data)
 
-			if data == "exit":
-				break
-
 		UDPSock.close()
 
 class main_window(QtGui.QWidget):
@@ -82,7 +79,6 @@ class main_window(QtGui.QWidget):
 
 		self.cur_IP = gethostbyname(gethostname())
 		self.cur_split_IP = self.cur_IP.split(".")
-		print "Initializing: Local IP Address = "+self.cur_IP
 
 	def initUI(self):
 
@@ -212,7 +208,7 @@ class main_window(QtGui.QWidget):
 	def receive(self, message):
 
 		self.received_messages.append(message)
-		self.textbox.append("<-- "+message)
+		self.textbox.append("[THEM - "+strftime("%H:%M:%S")"] --> "+message)
 
 	def send(self):
 
@@ -222,7 +218,7 @@ class main_window(QtGui.QWidget):
 
 			self.send_thread.send(self.sendbox.text())
 			self.sent_messages.append(str(self.sendbox.text()))
-			self.textbox.append("--> "+self.sendbox.text())
+			self.textbox.append("[YOU - "+strftime("%H:%M:%S")+"] --> "+self.sendbox.text())
 			self.sendbox.setText("")
 
 	def connect(self):
@@ -262,12 +258,6 @@ class main_window(QtGui.QWidget):
 		self.cur_IP_text2.setText(self.cur_split_IP[1])
 		self.cur_IP_text3.setText(self.cur_split_IP[2])
 		self.cur_IP_text4.setText(self.cur_split_IP[3])
-
-
-
-
-
-
 
 def main():
 
