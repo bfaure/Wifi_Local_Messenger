@@ -93,75 +93,75 @@ class main_window(QtGui.QWidget):
 		self.cur_IP_label.move(25, 25)
 		
 		self.cur_IP_text1 = QtGui.QLineEdit(self.cur_split_IP[0], self)
-		self.cur_IP_text1.move(180, 23)
+		self.cur_IP_text1.move(210, 23) # 180
 		self.cur_IP_text1.setEnabled(False)
-		self.cur_IP_text1.setFixedWidth(25)
+		self.cur_IP_text1.setFixedWidth(30)
 
 		self.cur_IP_text2 = QtGui.QLineEdit(self.cur_split_IP[1], self)
-		self.cur_IP_text2.move(220, 23)
+		self.cur_IP_text2.move(250, 23) # 220
 		self.cur_IP_text2.setEnabled(False)
-		self.cur_IP_text2.setFixedWidth(25)
+		self.cur_IP_text2.setFixedWidth(30)
 
 		self.cur_IP_text3 = QtGui.QLineEdit(self.cur_split_IP[2], self)
-		self.cur_IP_text3.move(260, 23)
+		self.cur_IP_text3.move(290, 23) # 260
 		self.cur_IP_text3.setEnabled(False)
-		self.cur_IP_text3.setFixedWidth(25)
+		self.cur_IP_text3.setFixedWidth(30)
 
 		self.cur_IP_text4 = QtGui.QLineEdit(self.cur_split_IP[3], self)
-		self.cur_IP_text4.move(300, 23)
+		self.cur_IP_text4.move(330, 23) # 300
 		self.cur_IP_text4.setEnabled(False)
-		self.cur_IP_text4.setFixedWidth(25)
+		self.cur_IP_text4.setFixedWidth(30)
 
 		dot1 = QtGui.QLabel(".",self)
-		dot1.move(211,30)
+		dot1.move(243,30) # 211
 
 		dot2 = QtGui.QLabel(".", self)
-		dot2.move(251, 30)
+		dot2.move(283, 30) # 251
 
 		dot3 = QtGui.QLabel(".", self)
-		dot3.move(291, 30)
+		dot3.move(323, 30) # 291
 
 		self.other_IP_label = QtGui.QLabel("Enter Local IP Of Other User: ", self)
 		self.other_IP_label.resize(self.other_IP_label.sizeHint())
 		self.other_IP_label.move(25, 75)
 		
 		self.other_IP_text1 = QtGui.QLineEdit("", self)
-		self.other_IP_text1.move(180, 73)
+		self.other_IP_text1.move(210, 73)
 		self.other_IP_text1.setEnabled(True)
-		self.other_IP_text1.setFixedWidth(25)
+		self.other_IP_text1.setFixedWidth(30)
 		self.other_IP_text1.textChanged.connect(self.otherIPChanged)
 		self.other_IP_text1.setValidator(self.IP_validator)
 
 		self.other_IP_text2 = QtGui.QLineEdit("", self)
-		self.other_IP_text2.move(220, 73)
+		self.other_IP_text2.move(250, 73)
 		self.other_IP_text2.setEnabled(True)
-		self.other_IP_text2.setFixedWidth(25)
+		self.other_IP_text2.setFixedWidth(30)
 		self.other_IP_text2.textChanged.connect(self.otherIPChanged)
 		self.other_IP_text2.setValidator(self.IP_validator)
 
 		self.other_IP_text3 = QtGui.QLineEdit("", self)
-		self.other_IP_text3.move(260, 73)
+		self.other_IP_text3.move(290, 73)
 		self.other_IP_text3.setEnabled(True)
-		self.other_IP_text3.setFixedWidth(25)
+		self.other_IP_text3.setFixedWidth(30)
 		self.other_IP_text3.textChanged.connect(self.otherIPChanged)
 		self.other_IP_text3.setValidator(self.IP_validator)
 
 		self.other_IP_text4 = QtGui.QLineEdit("", self)
-		self.other_IP_text4.move(300, 73)
+		self.other_IP_text4.move(330, 73)
 		self.other_IP_text4.setEnabled(True)
-		self.other_IP_text4.setFixedWidth(25)
+		self.other_IP_text4.setFixedWidth(30)
 		self.other_IP_text4.textChanged.connect(self.otherIPChanged)
 		self.other_IP_text4.setValidator(self.IP_validator)
 
 
 		dot4 = QtGui.QLabel(".",self)
-		dot4.move(211,80)
+		dot4.move(243,80)
 
 		dot5 = QtGui.QLabel(".", self)
-		dot5.move(251, 80)
+		dot5.move(283, 80)
 
 		dot6 = QtGui.QLabel(".", self)
-		dot6.move(291, 80)
+		dot6.move(323, 80)
 
 		self.connect_button = QtGui.QPushButton("Connect", self)
 		self.connect_button.setEnabled(False)
