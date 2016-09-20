@@ -30,15 +30,14 @@ class sender_thread(QThread):
 	def connect(self, host):
 		
 		self.host = host
-		self.port = _PORT
-		self.addr = (host, port)
+		self.addr = (host, self.port)
 		self.UDPSock = socket(AF_INET, SOCK_DGRAM)
 		print "Sender thread online."
 		return True
 
 	def send(self, message):
 
-		self.UDPSock.sendto(message, self.addr)
+		self.UDPSock.sendto(str(message), self.addr)
 		if message == "exit":
 			self.UDPSock.close()
 
@@ -59,6 +58,7 @@ class receive_thread(QThread):
 		UDPSock.bind(addr)
 
 		while True:
+			
 			(data, addr) = UDPSock.recvfrom(buf)
 			self.emit(SIGNAL("got_message(QString)"), data)
 
@@ -66,7 +66,6 @@ class receive_thread(QThread):
 				break
 
 		UDPSock.close()
-
 
 class main_window(QtGui.QWidget):
 
@@ -187,6 +186,7 @@ class main_window(QtGui.QWidget):
 		self.send_button.resize(self.send_button.sizeHint())
 		self.send_button.clicked.connect(self.send)
 		self.send_button.move(306, 598)
+		self.send_button.setEnabled(False)
 		
 		self.send_thread = sender_thread()
 		self.send_thread.start()
@@ -202,23 +202,34 @@ class main_window(QtGui.QWidget):
 		self.connected = False
 		self.show()
 
+	def keyPressEvent(self, event):
+		
+		# Responds when user clicks key
+		if event.key() == QtCore.Qt.Key_Return or event.key() == QtCore.Qt.Key_Enter:
+			self.send()
+
 	def receive(self, message):
 
 		self.received_messages.append(message)
-		print message
+		self.textbox.append("<-- "+message)
 
 	def send(self):
 
 		if self.connected == False:
 			return
 		else:
+
 			self.send_thread.send(self.sendbox.text())
-			self.sent_messages.append(self.sendbox.text())
+			self.sent_messages.append(str(self.sendbox.text()))
+			self.textbox.append("--> "+self.sendbox.text())
+			self.sendbox.setText("")
 
 	def connect(self):
 
 		if self.send_thread.connect(self.other_IP) == True:
 			self.connect_button.setText("Connected")
+			self.connected = True
+			self.send_button.setEnabled(True)
 		else:
 			print "ERROR: Could not connect to other IP"
 
