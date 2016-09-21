@@ -277,10 +277,10 @@ class main_window(QtGui.QWidget):
 	def otherIPChanged(self):
 
 		self.other_split_IP = []
-		self.other_split_IP.append(self.other_IP_text1.text())
-		self.other_split_IP.append(self.other_IP_text2.text())
-		self.other_split_IP.append(self.other_IP_text3.text())
-		self.other_split_IP.append(self.other_IP_text4.text())
+		self.other_split_IP.append(str(self.other_IP_text1.text()))
+		self.other_split_IP.append(str(self.other_IP_text2.text()))
+		self.other_split_IP.append(str(self.other_IP_text3.text()))
+		self.other_split_IP.append(str(self.other_IP_text4.text()))
 
 		self.other_IP = self.other_split_IP[0]+"."+self.other_split_IP[1]+"."+self.other_split_IP[2]+"."+self.other_split_IP[3]
 
