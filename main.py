@@ -21,6 +21,40 @@ _BUFFER = 1024
 
 # This is a test comment (git)
 
+def encrypt(plaintext):
+	ciphertext = plaintext
+	# Implement ecryption here
+	return ciphertext
+
+def decrypt(ciphertext):
+	plaintext = ciphertext
+	# Implement decryption here
+	return plaintext
+
+class message():
+
+	def __init__(self, text="", sender="", receiver=""):
+		self.text 		= text
+		self.time 		= strftime("%H:%M:%S")
+		self.sender 	= sender
+		self.receiver 	= receiver
+
+	def serialize(self):
+		# Returns a string representation of message struct
+		return self.text+"|||"+self.time+"|||"+self.sender+"|||"+self.receiver
+
+	def deserialize(self, text):
+		split_message = text.split("|||")
+
+		self.text 		= split_message[0]
+		self.time 		= split_message[1]
+		self.sender 	= split_message[2]
+		self.receiver 	= split_message[3]
+
+	def output(self):
+		out = "[ "+self.sender+" - "+self.time+"] --> "+self.text
+		return out
+
 class sender_thread(QThread):
 
 	def __init__(self):
@@ -193,8 +227,8 @@ class main_window(QtGui.QWidget):
 		QtCore.QObject.connect(self.rec_thread, QtCore.SIGNAL("got_message(QString)"), self.receive)
 		QtCore.QObject.connect(self, QtCore.SIGNAL("send_message(QString)"), self.send_thread.send)
 
-		self.received_messages 	= []
-		self.sent_messages 		= []
+		self.received_messages 	= [] # List of message structs
+		self.sent_messages 		= [] # List of message structs
 
 		self.connected = False
 		self.show()
@@ -207,18 +241,28 @@ class main_window(QtGui.QWidget):
 
 	def receive(self, message):
 
-		self.received_messages.append(message)
-		self.textbox.append("[THEM - "+strftime("%H:%M:%S")+"] --> "+message)
+		plaintext_message 	= decrypt(message) # Decrypt the message
+		new_message 		= message() # Create message struct
+		new_message.deserialize(plaintext_message) # Parse message contents
+
+		self.received_messages.append(new_message) # Add message to list
+		self.textbox.append(new_message.output()) # Output message
 
 	def send(self):
 
 		if self.connected == False:
 			return
 		else:
+			
+			new_message = message(str(self.sendbox.text()), self.cur_IP, self.other_IP) # Create message struct
+			self.sent_messages.append(new_message) # Add message to list
 
-			self.send_thread.send(self.sendbox.text())
-			self.sent_messages.append(str(self.sendbox.text()))
-			self.textbox.append("[YOU   - "+strftime("%H:%M:%S")+"] --> "+self.sendbox.text())
+			serial 		= new_message.serialize() # Get string representation
+			encrypted 	= encrypt(serial) # Encrypt the string
+
+			self.send_thread.send(encrypted) # Send the encrypted string
+			self.textbox.append(new_message.output()) # Output message
+
 			self.sendbox.setText("")
 
 	def connect(self):
