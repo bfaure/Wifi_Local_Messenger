@@ -239,9 +239,9 @@ class main_window(QtGui.QWidget):
 		if event.key() == QtCore.Qt.Key_Return or event.key() == QtCore.Qt.Key_Enter:
 			self.send()
 
-	def receive(self, message):
+	def receive(self, received):
 
-		plaintext_message 	= decrypt(message) # Decrypt the message
+		plaintext_message 	= decrypt(received) # Decrypt the message
 		new_message 		= message() # Create message struct
 		new_message.deserialize(plaintext_message) # Parse message contents
 
