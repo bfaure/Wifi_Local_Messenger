@@ -19,7 +19,6 @@ from time import strftime # For message timestamps
 _PORT 	= 13000
 _BUFFER = 1024
 
-# This is a test comment (git)
 
 def encrypt(plaintext):
 	ciphertext = plaintext
@@ -31,8 +30,33 @@ def decrypt(ciphertext):
 	# Implement decryption here
 	return plaintext
 
-class message():
+class user():
+	# Struct to hold information about a user
+	def __init__(self, name, ip):
+		self.ip 	= ip
+		self.name 	= name
 
+class user_pool():
+	# Class to manage user structs
+	def __init__(self):
+		self.users = [] # List of user structs
+
+	def add(self, name, ip):
+
+		new_user = user(name, ip)
+		self.users.append(new_user)
+
+	def getName(self, ip):
+
+		for current in self.users:
+			if current.ip == ip:
+				return current.name
+
+		print "WARNING: No user registered for IP "+ip
+		return ip
+
+class message():
+	# Class to hold information about a message
 	def __init__(self, text="", sender="", receiver=""):
 		self.text 		= text
 		self.time 		= strftime("%H:%M:%S")
@@ -98,6 +122,41 @@ class receive_thread(QThread):
 			self.emit(SIGNAL("got_message(QString)"), data)
 
 		UDPSock.close()
+
+
+class ip_display_window(QtGui.QWidget):
+
+	def __init__(self, parent=None):
+		super(ip_display_window, self).__init__()
+		self.fetchIPs()
+		self.initUI()
+
+	def fetchIPs(self):
+		self.ips = []
+
+	def initUI(self):
+
+		self.setFixedWidth(400)
+		self.setFixedHeight(400)
+
+		self.ip_display = QtGui.QTextEdit(self)
+		self.ip_display.setFixedHeight(394)
+		self.ip_display.setFixedWidth(394)
+		self.ip_display.move(3,3)
+
+		self.setWindowTitle("Local IP Addresses")
+
+	def updateUI(self):
+		# Updates the text box with all of the current ip addresses
+		self.ip_display.clear()
+
+		for ip in self.ips:
+			self.ip_display.append(ip)
+
+	def open_window(self):
+		self.fetchIPs() # Refresh the list of local ips
+		self.updateUI() # Update the interface
+		self.show() # Show the window
 
 class main_window(QtGui.QWidget):
 
@@ -227,11 +286,25 @@ class main_window(QtGui.QWidget):
 		QtCore.QObject.connect(self.rec_thread, QtCore.SIGNAL("got_message(QString)"), self.receive)
 		QtCore.QObject.connect(self, QtCore.SIGNAL("send_message(QString)"), self.send_thread.send)
 
+		# Menu bar widgets
+		self.menu_bar 	= QtGui.QMenuBar(self)
+		self.tool_menu 	= self.menu_bar.addMenu("Tools")
+
+		# Menu bar actions
+		self.show_local_ip_action = self.tool_menu.addAction("Show Local IPs", self.showIPs, QtGui.QKeySequence("Ctrl+N"))
+
+		# Child windows
+		self.ip_window = ip_display_window()
+
 		self.received_messages 	= [] # List of message structs
 		self.sent_messages 		= [] # List of message structs
 
 		self.connected = False
 		self.show()
+
+	def showIPs(self):
+		# Opens a new window that shows the user local IP addresses on network
+		self.ip_window.open_window()
 
 	def keyPressEvent(self, event):
 		
